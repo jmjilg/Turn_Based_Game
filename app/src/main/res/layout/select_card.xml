@@ -7,17 +7,52 @@
 
 
     <Button
-        android:id="@+id/a"
+        android:id="@+id/ATTACK_BUTTON"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="attack"
         android:textSize="30dp"/>
 
     <Button
-        android:id="@+id/b"
+        android:id="@+id/ATTACK_COUNTER_BUTTON"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="finish"
-        android:textSize="30dp"/>
+        android:text="ATTACK_COUNTER"
+        android:textSize="30dp" />
+
+    <Button
+        android:id="@+id/DEFEND_BUTTON"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="DEFEND"
+        android:textSize="30dp" />
+
+    <Button
+        android:id="@+id/DEFEND_COUNTER_BUTTON"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="DEFEND_COUNTER"
+        android:textSize="30dp" />
+
+    <Button
+        android:id="@+id/DAMAGE_BUFF_BUTTON"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="DAMAGE_BUFF"
+        android:textSize="30dp" />
+
+    <Button
+        android:id="@+id/BUFF_COUNTER_BUTTON"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="BUFF_COUNTER"
+        android:textSize="30dp" />
+
+    <Button
+        android:id="@+id/FINISH_BUTTON"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="FINISH"
+        android:textSize="30dp" />
 
 </LinearLayout>
