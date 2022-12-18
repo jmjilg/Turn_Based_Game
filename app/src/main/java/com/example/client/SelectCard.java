@@ -1,13 +1,13 @@
 package com.example.client;
 
 import android.annotation.SuppressLint;
+import androidx.annotation.Nullable;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
-import androidx.annotation.Nullable;
+import android.widget.ImageButton;
 
 public class SelectCard extends Activity {
 
@@ -19,8 +19,9 @@ public class SelectCard extends Activity {
     private final static int BUFF_COUNTER = 6;
     private final static int FINISH = 7;
 
-    Button ATTACK_BUTTON, ATTACK_COUNTER_BUTTON, DEFEND_BUTTON, DEFEND_COUNTER_BUTTON, DAMAGE_BUFF_BUTTON
-            , BUFF_COUNTER_BUTTON, FINISH_BUTTON;
+    ImageButton  ATTACK_BUTTON, ATTACK_COUNTER_BUTTON, DEFEND_BUTTON, DEFEND_COUNTER_BUTTON, DAMAGE_BUFF_BUTTON
+            , BUFF_COUNTER_BUTTON;
+    Button FINISH_BUTTON;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -28,12 +29,12 @@ public class SelectCard extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_card);
 
-        ATTACK_BUTTON = (Button)findViewById(R.id.ATTACK_BUTTON);
-        ATTACK_COUNTER_BUTTON = (Button)findViewById(R.id.ATTACK_COUNTER_BUTTON);
-        DEFEND_BUTTON = (Button)findViewById(R.id.DEFEND_BUTTON);
-        DEFEND_COUNTER_BUTTON = (Button)findViewById(R.id.DEFEND_COUNTER_BUTTON);
-        DAMAGE_BUFF_BUTTON = (Button)findViewById(R.id.DAMAGE_BUFF_BUTTON);
-        BUFF_COUNTER_BUTTON = (Button)findViewById(R.id.BUFF_COUNTER_BUTTON);
+        ATTACK_BUTTON = (ImageButton)findViewById(R.id.ATTACK_BUTTON);
+        ATTACK_COUNTER_BUTTON = (ImageButton)findViewById(R.id.ATTACK_COUNTER_BUTTON);
+        DEFEND_BUTTON = (ImageButton)findViewById(R.id.DEFEND_BUTTON);
+        DEFEND_COUNTER_BUTTON = (ImageButton)findViewById(R.id.DEFEND_COUNTER_BUTTON);
+        DAMAGE_BUFF_BUTTON = (ImageButton)findViewById(R.id.DAMAGE_BUFF_BUTTON);
+        BUFF_COUNTER_BUTTON = (ImageButton)findViewById(R.id.BUFF_COUNTER_BUTTON);
         FINISH_BUTTON = (Button)findViewById(R.id.FINISH_BUTTON);
 
         ATTACK_BUTTON.setOnClickListener(new View.OnClickListener() {

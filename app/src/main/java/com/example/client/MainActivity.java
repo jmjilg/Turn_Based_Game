@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -29,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private final static int BUFF_COUNTER = 6;
     private final static int FINISH = 7;
 
-    TextView txt_info;
+    TextView txt_info, txt_active;
     ImageView img_card;
     Button btn_select, btn_end;
     Info info;
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         DPlayer.SetInfo(info);
 
         txt_info = (TextView) findViewById(R.id.txt_info);
+        txt_active = (TextView) findViewById(R.id.enemy_active);
         img_card = (ImageView) findViewById(R.id.img_card);
         btn_select = (Button) findViewById(R.id.btn_select);
         btn_end = (Button)findViewById(R.id.btn_end);
@@ -79,34 +82,40 @@ public class MainActivity extends AppCompatActivity {
 
                 // 일단 상대방에게 데이터를 먼저 받고 난 후에 분기처리를 진행함.
                 // 겸사겸사 내가 무엇을 선택했는지 보냄.
-               switch (iMyChoice){
-                   case ATTACK:
-                       DPlayer.SetChoice(ATTACK);   //Game 클래스안에서 Data클래스의 멤버변수인 iChoice를 Set함
-                       break;
-                   case ATTACK_COUNTER:
-                       DPlayer.SetChoice(ATTACK_COUNTER);
-                       break;
-                   case DEFEND:
-                       DPlayer.SetChoice(DEFEND);
-                       break;
-                   case DEFEND_COUNTER:
-                       DPlayer.SetChoice(DEFEND_COUNTER);
-                       break;
-                   case DAMAGE_BUFF:
-                       DPlayer.SetChoice(DAMAGE_BUFF);
-                       break;
-                   case BUFF_COUNTER:
-                       DPlayer.SetChoice(BUFF_COUNTER);
-                       break;
-                   case FINISH:
-                       DPlayer.SetChoice(FINISH);
-                       break;
-               }
+                switch (iMyChoice){
+                    case ATTACK:
+                        DPlayer.SetChoice(ATTACK);   //Game 클래스안에서 Data클래스의 멤버변수인 iChoice를 Set함
+                        img_card.setImageResource(R.drawable.attack);
+                        break;
+                    case ATTACK_COUNTER:
+                        DPlayer.SetChoice(ATTACK_COUNTER);
+                        img_card.setImageResource(R.drawable.attack_counter);
+                        break;
+                    case DEFEND:
+                        DPlayer.SetChoice(DEFEND);
+                        img_card.setImageResource(R.drawable.armor);
+                        break;
+                    case DEFEND_COUNTER:
+                        DPlayer.SetChoice(DEFEND_COUNTER);
+                        img_card.setImageResource(R.drawable.armor_counter);
+                        break;
+                    case DAMAGE_BUFF:
+                        DPlayer.SetChoice(DAMAGE_BUFF);
+                        img_card.setImageResource(R.drawable.buff);
+                        break;
+                    case BUFF_COUNTER:
+                        DPlayer.SetChoice(BUFF_COUNTER);
+                        img_card.setImageResource(R.drawable.buff_counter);
+                        break;
+                    case FINISH:
+                        DPlayer.SetChoice(FINISH);
+                        break;
+                }
                 if(info.GetHP() <= 0) {// 만약 플레이어의 죽은 상태라면 죽었다고 표시하고 데이터 보냄
                     DPlayer.SetChoice(DEATH);
                 }
 
-               // 상대방에게 내가 선택한 정보를 보냄과 동시에 상대방이 선택한 정보를 받아옴
+                // 상대방에게 내가 선택한 정보를 보냄과 동시에 상대방이 선택한 정보를 받아옴
                 try {
                     Thread thr = new Thread(ga);
                     thr.start(); // 데이터를 보내고
@@ -114,19 +123,14 @@ public class MainActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                if(info.GetHP() <= 0) {
-                    txt_info.setText(info.GetStat() + "\n패배했습니다...\n"); // 로그와 플레이어 정보 출력
-                return;
-                }
 
-               // 내가 보낸 데이터에 따른 분기처리
+                // 내가 보낸 데이터에 따른 분기처리
                 switch (iMyChoice){
                     case ATTACK:
                         iDamage = DPlayer.GetInfo().GetDamage();
                         if(DEnemy.GetChoice() == DEFEND)
                             iDamage -= DEnemy.GetInfo().GetArmor();
-                        else
-                            DEnemy.GetInfo().SetHP(iDamage);
+                        DEnemy.GetInfo().SetHP(iDamage);
                         strlog=iDamage + "만큼 공격합니다.\n";
                         break;
                     case ATTACK_COUNTER:// ATTACK_COUNTER todo
@@ -168,16 +172,11 @@ public class MainActivity extends AppCompatActivity {
 
                 // 상대방이 보낸 데이터에 따른 분기처리
                 switch (DEnemy.GetChoice()){
-                    case DEATH:// DEATH을 보냈다는 것은 상대가 죽었다는 것을 의미
-                        // 상대방이 죽었을 때의 동작 실행
-                        txt_info.setText(info.GetStat() + "\n승리했습니다!\n");
-                        return;
                     case ATTACK:
                         iDamage = DEnemy.GetInfo().GetDamage();
                         if(DPlayer.GetChoice() == DEFEND)
                             iDamage -= DPlayer.GetInfo().GetArmor();
-                        else
-                            DPlayer.GetInfo().SetHP(iDamage);
+                        DPlayer.GetInfo().SetHP(iDamage);
                         strlog = strlog + "상대방이 "+ iDamage + "만큼 공격합니다. \n";
                         break;
                     case ATTACK_COUNTER:// ATTACK_COUNTER todo
@@ -215,6 +214,24 @@ public class MainActivity extends AppCompatActivity {
                     case FINISH:// FINISH todo
                         break;
                 }
+                if(info.GetHP() <= 0) {
+                    txt_info.setText(info.GetStat() + "\n패배했습니다...\n"); // 로그와 플레이어 정보 출력
+                    Intent intent = new Intent(getApplicationContext(), GameOverActivity.class);
+                    String gameover = "1";
+                    intent.putExtra("gameover", gameover);
+                    startActivity(intent);
+                    return;
+                }
+
+                if (DEnemy.GetInfo().GetHP() <= 0){
+                    // 상대방이 죽었을 때의 동작 실행
+                    txt_info.setText(info.GetStat() + "\n승리했습니다!\n");
+                    Intent intent = new Intent(getApplicationContext(), GameOverActivity.class);
+                    String gameover = "0";
+                    intent.putExtra("gameover", gameover);
+                    startActivity(intent);
+                    return;
+                }
 
                 // 버프 체크
                 if(DPlayer.GetInfo().GetBuffCount()>0) {
@@ -232,8 +249,9 @@ public class MainActivity extends AppCompatActivity {
                         strlog2 += "상대방의 버프가 해제되었습니다 \n";
                     }
                 }
-                //txt_info2.setText(DEnemy.GetInfo().GetStat()); // 상대방 플레이어 정보 출력
-                txt_info.setText(strlog + info.GetStat() + strlog2); // 로그와 플레이어 정보 출력
+                txt_active.setText(strlog + "상대방 정보 \n" + DEnemy.GetInfo().GetStat());
+//                txt_active.setText(strlog);
+                txt_info.setText(info.GetStat() + strlog2); // 로그와 플레이어 정보 출력
             }
     );
 

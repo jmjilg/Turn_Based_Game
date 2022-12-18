@@ -27,6 +27,8 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity android:name=".GameOverActivity"
+            android:exported="true"></activity>
         <activity android:name=".SelectCard"></activity>
     </application>
 
